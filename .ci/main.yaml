@@ -1,7 +1,7 @@
 
 resource_types:
 resources:
-- name: concourse-helm-resource-master
+- name: concourse-helm-resource
   type: git
   source:
     repo: helix-re/concourse-helm-resource
@@ -17,10 +17,23 @@ resources:
 jobs:
 - name: build_docker_image
   plan:
-  - get: concourse-helm-resource-master
+  - get: concourse-helm-resource
+  - task: debug
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: alpine
+          tag: 3.7
+      inputs:
+        - name: concourse-helm-resource
+      run:
+        path: /bin/sh
+        args: ["-c", "ls", "-l"]
     trigger: false
   - put: docker
     params:
-      build: concourse-helm-resource/.ci
+      build: concourse-helm-resource/
     get_params:
       skip_download: true
