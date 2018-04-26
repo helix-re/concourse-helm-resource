@@ -18,7 +18,7 @@ jobs:
 - name: build_docker_image
   plan:
   - get: concourse-helm-resource-master
-    trigger: true
+    trigger: false
   - put: docker
     params:
       build: concourse-helm-resource/.ci

@@ -5,7 +5,7 @@ ENV HELM_VERSION 2.8.2
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
-ADD assets /opt/resource
+COPY assets /opt/resource
 RUN chmod +x /opt/resource/*
 
 RUN apk --no-cache add \
