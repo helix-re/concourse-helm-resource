@@ -1,6 +1,14 @@
 
 resource_types:
 resources:
+- name: build_number
+  type: semver
+  source:
+    driver: gcs
+    initial_version: 0.0.1
+    bucket: helix-global-concourse_semvar
+    key: concourse/concourse-helm-resource
+    json_key: ((helix-global-k8s-service-account))
 - name: concourse-helm-resource
   type: git
   source:
@@ -14,13 +22,19 @@ resources:
     repository: us.gcr.io/helix-global/concourse-helm-resource
     username: _json_key
     password: ((helix-global-k8s-service-account))
+
 jobs:
 - name: build_docker_image
   plan:
+  - get: build_number
   - get: concourse-helm-resource
     trigger: false
   - put: docker
     params:
       build: concourse-helm-resource/
+      tag: build_number/number
     get_params:
       skip_download: true
+  - put: build_number
+    params:
+      bump: patch
