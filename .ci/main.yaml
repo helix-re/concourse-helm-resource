@@ -28,11 +28,12 @@ jobs:
   plan:
   - get: build_number
   - get: concourse-helm-resource
-    trigger: false
+    trigger: true
   - put: docker
     params:
       build: concourse-helm-resource/
       tag: build_number/number
+      tag_as_latest: true
     get_params:
       skip_download: true
   - put: build_number
