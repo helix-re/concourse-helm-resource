@@ -18,7 +18,7 @@ setup_kubernetes() {
 
         echo "$gcloud_auth" > gcloud-auth-key.json
         gcloud auth activate-service-account --key-file gcloud-auth-key.json
-        gcloud container clusters get-credentials helix-global-cluster --zone us-west1-a --project helix-global
+        gcloud container clusters get-credentials $gcloud_cluster --zone us-west1-a --project $gcloud_project
     elif [ -n "$kubeconfig" ]; then
         echo "$kubeconfig" > /root/.kube/config
     else
