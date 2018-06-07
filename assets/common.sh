@@ -17,7 +17,9 @@ setup_kubernetes() {
         gcloud_cluster=$(jq -r '.source.gcloud_cluster // ""' < $payload)
 
         echo "$gcloud_auth" > gcloud-auth-key.json
+        gcloud auth list
         gcloud auth activate-service-account --key-file gcloud-auth-key.json
+        gcloud auth list
         gcloud container clusters get-credentials $gcloud_cluster --zone us-west1-a --project $gcloud_project
     elif [ -n "$kubeconfig" ]; then
         echo "$kubeconfig" > /root/.kube/config
