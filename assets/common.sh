@@ -8,6 +8,7 @@ info() { printf "${c_blue}%b${c_reset}" "$*\n"; }
 setup_kubernetes() {
     payload=$1
     source=$2
+    ls -la /root/
     mkdir -p /root/.kube
     gcloud_auth=$(jq -r '.source.gcloud_auth // ""' < $payload)
     kubeconfig=$(jq -r '.source.kubeconfig // ""' < $payload)
