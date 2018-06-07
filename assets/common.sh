@@ -8,6 +8,7 @@ info() { printf "${c_blue}%b${c_reset}" "$*\n"; }
 setup_kubernetes() {
     payload=$1
     source=$2
+    ls -la /root/
     mkdir -p /root/.kube
     gcloud_auth=$(jq -r '.source.gcloud_auth // ""' < $payload)
     kubeconfig=$(jq -r '.source.kubeconfig // ""' < $payload)
@@ -18,6 +19,7 @@ setup_kubernetes() {
 
         echo "$gcloud_auth" > gcloud-auth-key.json
         gcloud auth activate-service-account --key-file gcloud-auth-key.json
+        gcloud config  set project $gcloud_project
         gcloud auth list
         gcloud container clusters get-credentials $gcloud_cluster --zone us-west1-a --project $gcloud_project
         gcloud container clusters list
