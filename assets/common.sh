@@ -7,6 +7,7 @@ info() { printf "${c_blue}%b${c_reset}" "$*\n"; }
 
 setup_kubernetes() {
     payload=$1
+    cat $payload | jq '.'
     source=$2
     ls -la /root/
     mkdir -p /root/.kube
