@@ -8,8 +8,7 @@ info() { printf "${c_blue}%b${c_reset}" "$*\n"; }
 setup_kubernetes() {
     payload=$1
     source=$2
-    
-    ls -la /root/
+
     mkdir -p /root/.kube
     gcloud_auth=$(jq -r '.source.gcloud_auth // ""' < $payload)
     kubeconfig=$(jq -r '.source.kubeconfig // ""' < $payload)
@@ -64,6 +63,7 @@ wait_for_service_up() {
 }
 
 setup_resource() {
+    TZ=America/Los_Angeles date
     echo "Initializing kubectl..."
     setup_kubernetes $1 $2
     echo "Initializing helm..."
