@@ -12,12 +12,12 @@ source /opt/resource/common.sh
 source=$1
 payload=$(mktemp helm-resource-request.XXXXXX)
 cat > $payload <&0
-debug=$(jq '.' < $payload)
-echo $debug
+
 # Prepare
 setup_resource $payload $source
 echo "Resource setup successful."
-
+debug=$(jq '.' < $payload)
+echo $debug | jq '.'
 # Parse parameters
 namespace=$(jq -r '.source.namespace // "default"' < $payload)
 tiller_namespace=$(jq -r '.source.tiller_namespace // "kube-system"' < $payload)
@@ -48,15 +48,13 @@ if [ -n "$release_file" ]; then
 else
   release=$(jq -r '.source.release // ""' < $payload)
 fi
+echo "release = $release"
 
 if [ -n "$release_name" ]; then
-  release_name=$release
+  release_name=`$release
 else
-  release=$(jq -r '.source.release_name // ""' < $payload)
+  release_name=$(jq -r '.source.release_name // ""' < $payload)
 fi
-
-echo "release_name"
-echo $release_name
 
 chart_full="/tmp/build/put/$chart"
 
