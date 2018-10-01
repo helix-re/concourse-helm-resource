@@ -16,8 +16,7 @@ cat > $payload <&0
 # Prepare
 setup_resource $payload $source
 echo "Resource setup successful."
-debug=$(jq '.' < $payload)
-echo $debug | jq '.'
+
 # Parse parameters
 namespace=$(jq -r '.source.namespace // "default"' < $payload)
 tiller_namespace=$(jq -r '.source.tiller_namespace // "kube-system"' < $payload)
@@ -55,10 +54,7 @@ else
   release_name=$release
 fi
 
-echo "release_name = $release_name"
-
 chart_full="/tmp/build/put/$chart"
-
 
 set_overriden_values() {
   # Get value from given path
