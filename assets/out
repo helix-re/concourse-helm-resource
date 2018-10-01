@@ -51,11 +51,11 @@ fi
 echo "release = $release"
 
 if [ -n "$release_name" ]; then
-  release_name=`$release
-else
   release_name=$(jq -r '.source.release_name // ""' < $payload)
+else
+  release_name=$release
 fi
-
+echo "release_name = $release_name"
 chart_full="/tmp/build/put/$chart"
 
 
