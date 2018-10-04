@@ -16,8 +16,8 @@ Install a [Helm chart](https://github.com/kubernetes/helm) to a generic Kubernet
 
 | Component | Version |
 | --- | --- |
-| `helm` | 2.8.2 |
-| Google Cloud SDK | 197.0.0 |
+| `helm` | 2.9.1 |
+| Google Cloud SDK | 218.0.0 |
 
 ## Add resource type to pipeline
 
