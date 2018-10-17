@@ -1,0 +1,68 @@
+{
+  "jobs": [
+    {
+      "name": "build_docker_image",
+      "plan": [
+        {
+          "get": "build_number"
+        },
+        {
+          "get": "concourse-helm-resource",
+          "trigger": true
+        },
+        {
+          "get_params": {
+            "skip_download": true
+          },
+          "params": {
+            "build": "concourse-helm-resource/",
+            "cache": true,
+            "cache_tag": "latest",
+            "tag": "build_number/number",
+            "tag_as_latest": true
+          },
+          "put": "docker"
+        },
+        {
+          "params": {
+            "bump": "patch"
+          },
+          "put": "build_number"
+        }
+      ]
+    }
+  ],
+  "resource_types": null,
+  "resources": [
+    {
+      "name": "build_number",
+      "source": {
+        "bucket": "helix-global-concourse-semvar",
+        "driver": "gcs",
+        "initial_version": "0.0.1",
+        "json_key": "((helix-global-k8s-service-account))",
+        "key": "concourse/concourse-helm-resource"
+      },
+      "type": "semver"
+    },
+    {
+      "name": "concourse-helm-resource",
+      "source": {
+        "branch": "master",
+        "private_key": "((helix-ci-github-ssh-key))",
+        "repo": "helix-re/concourse-helm-resource",
+        "uri": "git@github.com:helix-re/concourse-helm-resource.git"
+      },
+      "type": "git"
+    },
+    {
+      "name": "docker",
+      "source": {
+        "password": "((helix-global-k8s-service-account))",
+        "repository": "us.gcr.io/helix-global/concourse-helm-resource",
+        "username": "_json_key"
+      },
+      "type": "docker-image"
+    }
+  ]
+}

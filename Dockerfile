@@ -19,7 +19,8 @@ RUN apk --no-cache add \
         openssl \
         tar \
         jq \
-        ca-certificates
+        ca-certificates \
+        tzdata
 
 RUN    gcloud --version \
        && gcloud components install kubectl
