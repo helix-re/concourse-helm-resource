@@ -21,6 +21,7 @@ echo "Resource setup successful."
 namespace=$(jq -r '.source.namespace // "default"' < $payload)
 tiller_namespace=$(jq -r '.source.tiller_namespace // "kube-system"' < $payload)
 chart=$(jq -r '.params.chart // ""' < $payload)
+hosted_chart_name=$(jq -r '.params.hosted_chart_name // ""' < $payload)
 version=$(jq -r '.params.version // ""' < $payload)
 release_file=$(jq -r '.params.release // ""' < $payload)
 release_name=$(jq -r '.source.release_name // ""' < $payload)
@@ -37,12 +38,14 @@ override_secrets=$(jq -r ".params.override_values[]? | if .key and .value and .h
 override_secrets_file=$(jq -r ".params.override_values[]? | if .key and .path and .hide then (.key + \"=\" + .path) else empty end" < $payload)
 recreate_pods=$(jq -r '.params.recreate_pods // "true"' < $payload)
 
-if [ -z "/tmp/build/put/$chart" ]; then
+if [ -z "/tmp/build/put/$chart" ] && [ -z "$hosted_chart_name" ]
+ then
   echo "invalid payload (missing chart)"
   exit 1
 fi
 
-if [ -n "$release_file" ]; then
+if [ -n "$release_file" ]
+ then
   release=`cat $source/$release_file`
 else
   release=$(jq -r '.source.release // ""' < $payload)
@@ -131,10 +134,19 @@ helm_upgrade() {
   fi
   logfile="/tmp/log"
   mkdir -p /tmp
+
+  if [ -n $hosted_chart_name ]
+  then
+    helm_cmd="$helm_cmd $hosted_chart_name | tee $logfile"
+    helm_echo="$helm_echo $hosted_chart_name | tee $logfile"
+    echo "Running command $helm_echo"
+    eval "$helm_cmd"
+  else
   helm_cmd="$helm_cmd $chart_full | tee $logfile"
   helm_echo="$helm_echo $chart_full | tee $logfile"
   echo "Running command $helm_echo"
   eval "$helm_cmd"
+fi
 }
 
 helm_delete() {
