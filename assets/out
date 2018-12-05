@@ -135,7 +135,7 @@ helm_upgrade() {
   logfile="/tmp/log"
   mkdir -p /tmp
 
-  if [ -z "$hosted_chart_name" ]
+  if [ -n "$hosted_chart_name" ]
   then
     helm_cmd="$helm_cmd $hosted_chart_name | tee $logfile"
     helm_echo="$helm_echo $hosted_chart_name | tee $logfile"
