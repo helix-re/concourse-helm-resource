@@ -71,8 +71,8 @@ set_overriden_values() {
 
   # Set value directly
   for overriden_value in $override_values; do
-    helm_cmd="$helm_cmd --set '$(echo $overriden_value | base64 -d)'"
-    helm_echo="$helm_echo --set '$(echo $overriden_value | base64 -d)'"
+    helm_cmd="$helm_cmd --set $(echo $overriden_value | base64 -d)"
+    helm_echo="$helm_echo --set $(echo $overriden_value | base64 -d)"
   done
 
   # Get value from given path, but hide the value in the echo
