@@ -1,6 +1,6 @@
-FROM google/cloud-sdk:224.0.0-alpine
+FROM google/cloud-sdk:228.0.0-alpine
 
-ENV CLOUD_SDK_VERSION 224.0.0
+
 ENV HELM_VERSION 2.9.1
 
 ENV PATH /google-cloud-sdk/bin:$PATH
