@@ -38,7 +38,7 @@ override_secrets=$(jq -r ".params.override_values[]? | if .key and .value and .h
 override_secrets_file=$(jq -r ".params.override_values[]? | if .key and .path and .hide then (.key + \"=\" + .path) else empty end" < $payload)
 recreate_pods=$(jq -r '.params.recreate_pods // "true"' < $payload)
 
-if [ -z "/tmp/build/put/$chart" ] && [ -z "$hosted_chart_name" ]
+if [ -z "$chart" ] && [ -z "$hosted_chart_name" ]
  then
   echo "invalid payload (missing chart)"
   exit 1
@@ -58,7 +58,7 @@ else
 fi
 
 chart_full="/tmp/build/put/$chart"
-
+ls -l /tmp/build/put
 set_overriden_values() {
   # Get value from given path
   for overriden_value_file in $override_values_file; do
