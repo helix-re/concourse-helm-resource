@@ -59,8 +59,6 @@ fi
 
 chart_full="/tmp/build/put/$chart"
 
-find /tmp/build/put/ -type d
-
 set_overriden_values() {
   # Get value from given path
   for overriden_value_file in $override_values_file; do
