@@ -1,0 +1,11 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+     export VERSION=`cat concourse_build_version`
+     docker build -t us.gcr.io/helix-global/concourse-helm-resource:$$VERSION -t us.gcr.io/helix-global/concourse-helm-resource:latest .
+     docker push us.gcr.io/helix-global/concourse-helm-resource:$$VERSION 
+     docker push us.gcr.io/helix-global/concourse-helm-resource:latest
+    
