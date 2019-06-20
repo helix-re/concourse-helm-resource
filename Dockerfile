@@ -1,4 +1,4 @@
-FROM google/cloud-sdk:250.0.0-alpine
+FROM google/cloud-sdk:251.0.0-alpine
 
 
 ENV HELM_VERSION 2.14.1
